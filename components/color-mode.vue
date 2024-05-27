@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <button @click="toggleMode" class="w-8 h-8 p-1 -mt-1 rounded-full bg-gray-300 hover:bg-gray-400 dark:bg-gray-200 dark:hover:bg-white">
+  <div class="relative w-full">
+    <button @click="toggleMode" class=" p-1 -mt-1 rounded-full bg-gray-300 hover:bg-gray-400 dark:bg-gray-200 dark:hover:bg-white">
       <svg
-        class="fill-violet-700 block dark:hidden"
+        class="fill-violet-700 block w-8 h-8 dark:hidden"
         fill="currentColor"
         viewBox="0 0 20 20"
       >
@@ -11,7 +11,7 @@
         ></path>
       </svg>
       <svg
-        class="fill-yellow-500 hidden dark:block"
+        class="fill-yellow-500 hidden dark:block w-8 h-8"
         fill="currentColor"
         viewBox="0 0 20 20"
       >
@@ -22,6 +22,7 @@
         ></path>
       </svg>
     </button>
+    <p class="absolute md:hidden right-8 -mt-1 -translate-y-1/2 top-1/2">{{ nextMode }}</p>
   </div>
 </template>
 
