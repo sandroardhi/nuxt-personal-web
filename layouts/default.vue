@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto max-w-2xl">
-      <header class="flex justify-between items-cente mt-5">
+      <header class="flex justify-between items-cente mt-5 mb-10">
         <div>
           <NuxtLink
             to="/"
