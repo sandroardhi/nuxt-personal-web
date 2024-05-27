@@ -34,6 +34,7 @@
 <script setup>
 const activeId = ref(null);
 onMounted(() => {
+  let elements = []
   const callback = (entries) => {
     for (const entry of entries) {
       if (entry.isIntersecting) {
@@ -46,32 +47,22 @@ onMounted(() => {
     root: null,
     threshold: 0.5,
   });
-  const elements = document.querySelectorAll("h2", "h3");
+  setTimeout(() => {
+    elements = document.querySelectorAll("h2", "h3");
+  
+    elements.forEach((element) => {
+      observer.observe(element);
+    });
 
-  elements.forEach((element) => {
-    observer.observe(element);
-  });
-});
-
-onBeforeUnmount(() => {
-  const callback = (entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        activeId.value = entry.target.id;
-        break;
-      }
+  }, 150)
+  
+  onBeforeUnmount(() => {
+    for (const element of elements) {
+      observer.unobserve(element);
     }
-  };
-  const elements = document.querySelectorAll("h2", "h3");
-  const observer = new IntersectionObserver(callback, {
-    root: null,
-    threshold: 0.5,
   });
-
-  for (const element of elements) {
-    observer.unobserve(element);
-  }
 });
+
 </script>
 
 <style></style>

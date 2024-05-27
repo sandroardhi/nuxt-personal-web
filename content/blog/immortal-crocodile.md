@@ -1,6 +1,7 @@
 ---
 description: "The topic for today is: Is Crocodile an Immortal Being?"
 publishedAt: 2023-04-12 12:00:00
+toc: true
 ---
 
 # Immortal Crocodile 🤯
