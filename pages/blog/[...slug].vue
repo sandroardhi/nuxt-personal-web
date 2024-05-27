@@ -1,13 +1,68 @@
 <template>
-  <div>
-    <ContentDoc/>
-  </div>
+  <article
+    class="prose dark:prose-invert max-w-none prose-pre:bg-gray-200 dark:prose-pre:bg-gray-800 prose-pre:text-gray-700 dark:prose-pre:text-gray-300"
+  >
+    <ContentDoc v-slot="{ doc }">
+      <div class="grid grid-cols-6 gap-16">
+        <div :class="{ 'col-span-4': doc.toc, 'col-span-6': !doc.toc }">
+          <ContentRenderer :value="doc" />
+        </div>
+        <div class="col-span-2" v-if="doc.toc">
+          <aside class="sticky top-8">
+            <div class="font-semibold">
+              Table Of Contents
+            </div>
+            <nav class="not-prose">
+              <TocLinks :links="doc.body.toc.links" :active-id="activeId"/>
+            </nav>
+          </aside>
+        </div>
+      </div>
+    </ContentDoc>
+  </article>
 </template>
 
 <script setup>
-const route = useRoute();
-console.log(route.params.slug);
+const activeId = ref(null)
+onMounted(() => {
+  const callback = (entries) => {
+    for (const entry of entries) {
+      if(entry.isIntersecting) {
+        activeId.value = entry.target.id
+        break;
+      }
+    };
+  }
+  const observer = new IntersectionObserver(callback, {
+    root: null,
+    threshold: 0.5
+  })
+  const elements = document.querySelectorAll('h2', 'h3')
 
+  elements.forEach(element => {
+    observer.observe(element)
+  });
+})
+
+onBeforeUnmount(() => {
+  const callback = (entries) => {
+    for (const entry of entries) {
+      if(entry.isIntersecting) {
+        activeId.value = entry.target.id
+        break;
+      }
+    };
+  }
+  const elements = document.querySelectorAll('h2', 'h3')
+  const observer = new IntersectionObserver(callback, {
+    root: null,
+    threshold: 0.5
+  })
+
+  for (const element of elements) {
+    observer.unobserve(element)
+  }
+})
 </script>
 
 <style></style>
