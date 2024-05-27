@@ -6,6 +6,12 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/color-mode',
   ],
+  app: {
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in'
+    }
+  },
   content: {
     highlight: {
       theme: {
@@ -17,4 +23,5 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: ''
   }
+
 })

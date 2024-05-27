@@ -1,32 +1,56 @@
 <template>
-  <section class="not-prose font-mono">
-    <div class="column text-gray-400 text-sm">
-      <p>date</p>
-      <p>title</p>
-    </div>
-    <ul>
-      <li v-for="post in posts" :key="post._path">
-        <NuxtLink
-          :to="post._path"
-          class="column hover:bg-gray-100 dark:hover:bg-gray-700"
-        >
-          <div :class="post.displayYear ? 'text-gray-400 dark:text-gray-500' : 'opacity-0'">{{ post.year }}</div>
-          <div>{{ post.title }}</div>
-        </NuxtLink>
-      </li>
-    </ul>
-  </section>
+  <slot :posts="posts">
+    <section class="not-prose font-mono">
+      <div class="column text-gray-400 text-sm">
+        <p>date</p>
+        <p>title</p>
+      </div>
+      <ul>
+        <li v-for="post in posts" :key="post._path">
+          <NuxtLink
+            :to="post._path"
+            class="column hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            <div
+              :class="
+                post.displayYear
+                  ? 'text-gray-400 dark:text-gray-500'
+                  : 'opacity-0'
+              "
+            >
+              {{ post.year }}
+            </div>
+            <div>{{ post.title }}</div>
+          </NuxtLink>
+        </li>
+      </ul>
+    </section>
+  </slot>
 </template>
 
 <script setup>
+const props = defineProps({
+  limit: {
+    type: Number,
+    default: null,
+  },
+});
+
 // ini destructuring, cuma ngambil data aja, terus data nya dikasih alias posts
-const { data } = await useAsyncData("blog-lists", () =>
-  queryContent("/blog")
+// const { data: posts } = await useAsyncData("blog-lists", () =>
+
+const { data } = await useAsyncData("blog-lists", () => {
+  const query = queryContent("/blog")
     .where({ _path: { $ne: "/blog" } })
     .only(["_path", "title", "publishedAt"])
     .sort({ publishedAt: -1 })
-    .find()
-);
+    
+    if(props.limit) {
+      query.limit(props.limit)
+    } 
+
+    return query.find();
+});
 
 const posts = computed(() => {
   if (!data.value) {
@@ -38,10 +62,10 @@ const posts = computed(() => {
 
   for (const post of data.value) {
     const year = new Date(post.publishedAt).getFullYear();
-  
+
     const displayYear = year !== lastYear;
     post.displayYear = displayYear;
-    post.year = year
+    post.year = year;
     result.push(post);
 
     lastYear = year;
