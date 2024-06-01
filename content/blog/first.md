@@ -25,9 +25,9 @@ Todo list:
  - [ ] Pay bills
 
 Tables:
-| Name | Surname |
+| Name | Middle | Surname |
 |--|--|
-| Piotr | Jura |
+| Sandro | Ardhi | Saputra |
 
 ```html
 <html>
