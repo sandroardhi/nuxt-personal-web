@@ -16,7 +16,7 @@
           <div :class="{ 'col-span-6 md:col-span-4': doc.toc, 'col-span-6': !doc.toc }">
             <ContentRenderer :value="doc" />
           </div>
-          <div class="hidden md:col-span-2" v-if="doc.toc">
+          <div class="hidden md:block md:col-span-2" v-if="doc.toc">
             <aside class="sticky top-8">
               <div class="font-semibold">Table Of Contents</div>
               <nav class="not-prose">
